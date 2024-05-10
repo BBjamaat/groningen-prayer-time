@@ -27,7 +27,7 @@ const DataTable: React.FC<DataTableProps> = ({
     data,
     year = new Date().getFullYear()
 }) => {
-    const month = toTitleCase(data.month_name);
+    const month = toTitleCase(monthToDutch(data.month - 1));
 
     moment().format('iYYYY/iM/iD');
 
@@ -132,6 +132,14 @@ const getHijriMonths = (year: number, month: number) => {
         }
     }
     return out;
+}
+
+const monthToDutch = (month: number) => {
+    const months = [
+        "januari", "februari", "maart", "april", "mei", "juni",
+        "juli", "augustus", "september", "oktober", "november", "december"
+    ];
+    return months[month];
 }
 
 export default DataTable;
