@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ImageIcon, PrinterIcon } from "lucide-react";
+import { PrinterIcon } from "lucide-react";
 import { createPortal } from "react-dom";
 
 interface ControlsProps {
@@ -13,7 +13,7 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({
     value, setValue
 }) => {
-    if (typeof window !== "object") return null;
+    if (typeof window !== "object") return <div />;
 
     return createPortal((
         <div className="z-10 flex gap-2 fixed bottom-[50%] right-[10%] p-4 bg-white rounded-md shadow-md print:invisible">

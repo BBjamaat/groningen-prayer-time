@@ -1,6 +1,6 @@
 import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { toTitleCase } from "@/lib/utils";
-import moment from "moment-hijri";
+import moment, { Moment } from "moment-hijri";
 
 interface Data {
     month: number;
@@ -34,6 +34,9 @@ const DataTable: React.FC<DataTableProps> = ({
     const hijriMonths = getHijriMonths(year, data.month);
     const hijriYear = getHijriYear(year);
 
+    const DLSstart = getDLSstart(year);
+    const DLSend = getDLSend(year);
+
     return (
         <Table className="scale-[.8] -mt-24">
             <TableCaption>
@@ -59,33 +62,38 @@ const DataTable: React.FC<DataTableProps> = ({
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {data.data.map((item, index) => (
-                    <TableRow key={index} className={
-                        isFriday(item.day, data.month, year) ?
-                            "bg-gray-200 font-semibold" : ""
-                    }>
-                        <TableCell className="p-1 w-1 text-center">
-                            {getDayOfWeek(item.day, data.month, year, "nl-NL")}
-                        </TableCell>
-                        <TableCell className="p-1 w-1 text-center">
-                            {item.day}
-                        </TableCell>
-                        {CONSTS.map((constItem, constIndex) => (
-                            <TableCell className="py-1" key={constIndex}>
-                                {
-                                    // @ts-ignore
-                                    item[constItem.id]
-                                }
+                {data.data.map((item, index) => {
+                    const rowDate = new Date(year, data.month - 1, item.day);
+                    const isDLSchange = isDayLightSavingChange(rowDate, DLSstart, DLSend);
+                    return (
+                        <TableRow key={index} className={
+                            isFriday(rowDate) ?
+                                "bg-gray-200 font-semibold" : ""
+                        }>
+                            <TableCell className="p-1 w-1 text-center">
+                                {getDayOfWeek(rowDate, "nl-NL")}
+                                {isDLSchange ? "**" : ""}
                             </TableCell>
-                        ))}
-                        <TableCell className="py-1 w-2 text-center">
-                            {getDayOfWeek(item.day, data.month, year, "ar-SA")}
-                        </TableCell>
-                        <TableCell className="py-1 w-2 text-center">
-                            {getHijriDay(item.day, data.month, year)}
-                        </TableCell>
-                    </TableRow>
-                ))}
+                            <TableCell className="p-1 w-1 text-center">
+                                {item.day}
+                            </TableCell>
+                            {CONSTS.map((constItem, constIndex) => (
+                                <TableCell className="py-1" key={constIndex}>
+                                    {
+                                        // @ts-ignore
+                                        formatTime(item[constItem.id], rowDate, DLSstart, DLSend)
+                                    }
+                                </TableCell>
+                            ))}
+                            <TableCell className="py-1 w-2 text-center">
+                                {getDayOfWeek(rowDate, "ar-SA")}
+                            </TableCell>
+                            <TableCell className="py-1 w-2 text-center">
+                                {getHijriDay(rowDate)}
+                            </TableCell>
+                        </TableRow>
+                    )
+                })}
             </TableBody>
         </Table>
     )
@@ -100,19 +108,19 @@ const CONSTS = [
     { id: "isha", name: "Isha", arabic: "العشاء" },
 ].reverse();
 
-const getDayOfWeek = (day: number, month: number, year: number, locale: string) => {
-    return new Date(year, month - 1, day).toLocaleDateString(
+const getDayOfWeek = (date: Date, locale: string) => {
+    return date.toLocaleDateString(
         locale,
         { weekday: 'short' }
     ).toUpperCase();
 }
 
-const isFriday = (day: number, month: number, year: number) => {
-    return new Date(year, month - 1, day).getDay() === 5;
+const isFriday = (date: Date) => {
+    return date.getDay() === 5;
 }
 
-const getHijriDay = (day: number, month: number, year: number) => {
-    return moment(`${year}-${month}-${day}`, 'YYYY-M-D').format('iD');
+const getHijriDay = (date: Date) => {
+    return moment(date).format('iD');
 }
 
 const getHijriYear = (year: number) => {
@@ -140,6 +148,32 @@ const monthToDutch = (month: number) => {
         "juli", "augustus", "september", "oktober", "november", "december"
     ];
     return months[month];
+}
+
+const isDayLightSavingTime = (date: Date, DLSstart: Moment, DLSend: Moment) => {
+    return moment(date).isBetween(DLSstart, DLSend, "day", "[)");
+}
+const isDayLightSavingChange = (date: Date, DLSstart: Moment, DLSend: Moment) => {
+    // check if the date is the day of the change
+    return moment(date).isSame(DLSstart, "day") || moment(date).isSame(DLSend, "day");
+}
+
+const formatTime = (time: string, date: Date, DLSstart: Moment, DLSend: Moment) => {
+    const [hour, minute] = time.split(":");
+    if (isDayLightSavingTime(date, DLSstart, DLSend)) {
+        return `${Number(hour) + 1}:${minute}`;
+    }
+    return time;
+}
+
+const getDLSstart = (year: number) => {
+    // last sunday of march (31st)
+    return moment().year(year).month(2).endOf("month").day("Sunday");
+}
+
+const getDLSend = (year: number) => {
+    // last sunday of october (31st)
+    return moment().year(year).month(9).endOf("month").day("Sunday");
 }
 
 export default DataTable;

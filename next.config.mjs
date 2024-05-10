@@ -3,7 +3,8 @@ const nextConfig = {
     output: "export",
     trailingSlash: true,
     skipTrailingSlashRedirect: true,
-    basePath: "/groningen-prayer-time"
+    basePath: process.env.BASE_PATH || "",
+    assetPrefix: process.env.BASE_PATH || "",
 };
 
 export default nextConfig;

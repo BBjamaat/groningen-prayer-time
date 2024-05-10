@@ -1,8 +1,12 @@
+import Image from "next/image";
+
 const LogoHeader: React.FC = () => {
     return (<>
         <div className="flex justify-center items-center my-2">
-            <img
-                src="./rahma_logo.svg"
+            <Image
+                width={96}
+                height={96}
+                src="rahma_logo.svg"
                 alt="logo"
                 className="w-24 h-24" />
             <div className="ml-4 flex flex-col justify-center font-semibold">
