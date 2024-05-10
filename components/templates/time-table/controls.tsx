@@ -16,7 +16,7 @@ const Controls: React.FC<ControlsProps> = ({
     if (typeof window !== "object") return <div />;
 
     return createPortal((
-        <div className="z-10 flex gap-2 fixed bottom-[50%] right-[10%] p-4 bg-white rounded-md shadow-md print:invisible">
+        <div className="z-10 flex gap-2 fixed top-[50%] right-[10%] p-4 bg-white rounded-md shadow-md print:invisible max-lg:top-[1%] max-lg:right-[50%] max-lg:translate-x-1/2">
             <Input
                 type="month"
                 defaultValue={new Date().toISOString().split("T")[0].slice(0, 7)}
