@@ -3,7 +3,7 @@ const nextConfig = {
     output: "export",
     trailingSlash: true,
     skipTrailingSlashRedirect: true,
-    basePath: "/groningen-prayer-time/"
+    basePath: "/groningen-prayer-time"
 };
 
 export default nextConfig;
