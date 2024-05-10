@@ -22,7 +22,7 @@ jobs:
       - name: Install packages
         run: npm ci
       - name: Make build
-        run: BASE_PATH=groningen-prayer-time npm run build
+        run: BASE_PATH=/groningen-prayer-time npm run build
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
       - name: Deploy
