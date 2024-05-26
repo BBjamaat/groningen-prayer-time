@@ -161,7 +161,8 @@ const isDayLightSavingChange = (date: Date, DLSstart: Moment, DLSend: Moment) =>
 const formatTime = (time: string, date: Date, DLSstart: Moment, DLSend: Moment) => {
     const [hour, minute] = time.split(":");
     if (isDayLightSavingTime(date, DLSstart, DLSend)) {
-        return `${Number(hour) + 1}:${minute}`;
+        const newHour = (Number(hour) + 1) % 24;
+        return `${newHour}:${minute}`;
     }
     return time;
 }
