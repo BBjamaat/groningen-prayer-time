@@ -40,7 +40,14 @@ const DataTable: React.FC<DataTableProps> = ({
     return (
         <Table className="scale-[.8] -mt-24">
             <TableCaption>
-                {caption?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
+                {isDLSChangeMonth(data.month) && (<>
+                    <div className="text-red-600 float-start font-bold -mr-[100%]">
+                        **zomertijd
+                    </div>
+                </>)}
+                <div>
+                    {caption?.split("\n").map((line, index) => <p key={index}>{line}</p>)}
+                </div>
             </TableCaption>
             <TableHeader>
                 <TableRow>
@@ -175,6 +182,10 @@ const getDLSstart = (year: number) => {
 const getDLSend = (year: number) => {
     // last sunday of october (31st)
     return moment().year(year).month(9).endOf("month").day("Sunday");
+}
+
+const isDLSChangeMonth = (month: number) => {
+    return month === 3 || month === 10;
 }
 
 export default DataTable;
