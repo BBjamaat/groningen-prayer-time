@@ -1,9 +1,7 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PrinterIcon } from "lucide-react";
-import { createPortal } from "react-dom";
+import { toPng } from "html-to-image";
+import { ImageDownIcon, PrinterIcon } from "lucide-react";
 
 interface ControlsProps {
     value: string;
@@ -13,23 +11,50 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({
     value, setValue
 }) => {
-    if (typeof window !== "object") return <div />;
+    const htmlToImageConvert = () => {
+        const element = document.getElementById("page");
+        if (!element) return;
 
-    return createPortal((
-        <div className="z-10 flex gap-2 fixed top-[50%] right-[10%] p-4 bg-white rounded-md shadow-md print:invisible max-lg:top-[1%] max-lg:right-[50%] max-lg:translate-x-1/2">
+        element.style.transform = "scale(10)";
+
+        toPng(element, { cacheBust: false })
+            .then((dataUrl) => {
+                const link = document.createElement("a");
+                link.download = "my-image-name.svg";
+                link.href = dataUrl;
+                link.click();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+        element.style.transform = "";
+    };
+
+    return (
+        <div className="z-10 flex flex-col gap-2 fixed top-[50%] right-[10%] p-4 bg-white rounded-md shadow-md print:invisible max-lg:top-[1%] max-lg:right-[50%] max-lg:translate-x-1/2">
             <Input
                 type="month"
                 defaultValue={new Date().toISOString().split("T")[0].slice(0, 7)}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-            ></Input>
-            <Button
-                onClick={() => window.print()}
-            >
-                <PrinterIcon className="w-5 h-5" />
-            </Button>
+            />
+            <div className="w-full flex gap-2">
+                <Button
+                    className="flex-1"
+                    onClick={() => window.print()}
+                >
+                    <PrinterIcon className="w-5 h-5" />
+                </Button>
+                <Button
+                    className="flex-1"
+                    onClick={() => htmlToImageConvert()}
+                >
+                    <ImageDownIcon className="w-5 h-5" />
+                </Button>
+            </div>
         </div>
-    ), document.body)
+    )
 }
 
 export default Controls;
