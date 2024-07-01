@@ -5,12 +5,18 @@ import DataTable from "./data-table";
 import times from "@/assets/times.json";
 import LogoHeader from "./logo-header";
 import Controls from "./controls";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TimeTable: React.FC = () => {
-    const [date, setDate] = useState(new Date().toISOString().split("T")[0].slice(0, 7));
+    const [date, setDate] = useState("");
 
-    return (
+    useEffect(() => {
+        setDate(new Date().toISOString().split("T")[0].slice(0, 7));
+    }, []);
+
+    if (!date) return null;
+
+    return (<>
         <div className="flex justify-center items-center w-screen h-screen bg-gray-400">
             <A4Page id="page">
                 <LogoHeader />
@@ -21,12 +27,12 @@ const TimeTable: React.FC = () => {
                     Rekeningnummer/IBAN: NL78INGB 0009095082`}
                 />
             </A4Page>
-            <Controls
-                value={date}
-                setValue={setDate}
-            />
         </div>
-    );
+        <Controls
+            value={date}
+            setValue={setDate}
+        />
+    </>);
 }
 
 const dateToYear = (date: string) => {
