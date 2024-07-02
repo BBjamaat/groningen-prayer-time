@@ -1,3 +1,5 @@
 import TimeTable from "@/components/templates/time-table";
 
-export default () => <TimeTable />;
+export default function Page() {
+    return <TimeTable />;
+}
