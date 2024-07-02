@@ -10,7 +10,7 @@ const LogoHeader: React.FC = () => {
                 alt="logo"
                 className="w-24 h-24" />
             <div className="ml-4 flex flex-col justify-center font-semibold">
-                <span className="text-xl text-green-500">
+                <span className="text-xl text-green-rahma">
                     مؤسسة مسجد الرحمة في خرونينغن
                 </span>
                 <span className="text-base text-gray-500">
