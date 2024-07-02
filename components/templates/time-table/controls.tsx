@@ -15,8 +15,6 @@ const Controls: React.FC<ControlsProps> = ({
         const element = document.getElementById("page");
         if (!element) return;
 
-        element.style.transform = "scale(10)";
-
         toPng(element, { cacheBust: false })
             .then((dataUrl) => {
                 const link = document.createElement("a");
@@ -27,8 +25,6 @@ const Controls: React.FC<ControlsProps> = ({
             .catch((err) => {
                 console.log(err);
             });
-
-        element.style.transform = "";
     };
 
     return (
