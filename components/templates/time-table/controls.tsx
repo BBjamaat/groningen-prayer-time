@@ -20,7 +20,7 @@ const Controls: React.FC<ControlsProps> = ({
         toPng(element, { cacheBust: false })
             .then((dataUrl) => {
                 const link = document.createElement("a");
-                link.download = "my-image-name.svg";
+                link.download = "prayer-times.png";
                 link.href = dataUrl;
                 link.click();
             })
