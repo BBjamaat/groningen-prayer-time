@@ -32,7 +32,7 @@ const DataTable: React.FC<DataTableProps> = ({
     moment().format('iYYYY/iM/iD');
 
     const hijriMonths = getHijriMonths(year, data.month);
-    const hijriYear = getHijriYear(year);
+    const hijriYears = getHijriYears(year, data.month);
 
     const DLSstart = getDLSstart(year);
     const DLSend = getDLSend(year);
@@ -64,7 +64,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     </>))}
                     <TableHead colSpan={2} className="text-center">
                         {hijriMonths.map(m => <div key={m}>{m}</div>)}
-                        {hijriYear}
+                        {hijriYears.map(y => <div key={y}>{y}</div>)}
                     </TableHead>
                 </TableRow>
             </TableHeader>
@@ -130,8 +130,19 @@ const getHijriDay = (date: Date) => {
     return moment(date).format('iD');
 }
 
-const getHijriYear = (year: number) => {
-    return moment(`${year}`, 'YYYY').format('iYYYY');
+const getHijriYears = (year: number, month: number) => {
+    const out: string[] = [];
+    // check every day of the month
+    for (let i = 1; i <= 31; i++) {
+        const hijri = moment(`${year}-${month}-${i}`, 'YYYY-M-D');
+        if (hijri.isValid()) {
+            const year = hijri.format('iYYYY');
+            if (!out.includes(year)) {
+                out.push(year);
+            }
+        }
+    }
+    return out;
 }
 
 const getHijriMonths = (year: number, month: number) => {
