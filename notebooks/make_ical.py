@@ -64,7 +64,7 @@ for month in data:
                 ":")[0]), int(value.split(":")[1]), 0, tzinfo=time_zone) + timedelta(minutes=5))
             cal.add_component(event)
 
-with open('../public/prayer_times.ics', 'wb') as f:
+with open('../public/prayer_times_groningen.ics', 'wb') as f:
     f.write(cal.to_ical())
 
 # %%
