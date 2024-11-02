@@ -28,6 +28,8 @@ cal = Calendar()
 cal.add('prodid', '-//My calendar product//mxm.dk//')
 cal.add('version', '2.0')
 
+time_zone = pytz.timezone('Europe/Amsterdam')
+
 for month in data:
     if month['month'] < 11:
         continue
@@ -37,10 +39,17 @@ for month in data:
                 continue
             event = Event()
             event.add('summary', key)
-            event.add('dtstart', datetime(2024, month['month'], day['day'], int(
-                value.split(":")[0]), int(value.split(":")[1]), 0, tzinfo=pytz.utc))
+            event.add('dtstart',
+                      datetime(2024,
+                               month['month'],
+                               day['day'],
+                               int(value.split(":")[0]),
+                               int(value.split(":")[1]),
+                               0,
+                               tzinfo=time_zone
+                               ))
             event.add('dtend', datetime(2024, month['month'], day['day'], int(value.split(
-                ":")[0]), int(value.split(":")[1]), 0, tzinfo=pytz.utc) + timedelta(minutes=5))
+                ":")[0]), int(value.split(":")[1]), 0, tzinfo=time_zone) + timedelta(minutes=5))
             cal.add_component(event)
 for month in data:
     for day in month['data']:
@@ -50,9 +59,9 @@ for month in data:
             event = Event()
             event.add('summary', key)
             event.add('dtstart', datetime(2025, month['month'], day['day'], int(
-                value.split(":")[0]), int(value.split(":")[1]), 0, tzinfo=pytz.utc))
+                value.split(":")[0]), int(value.split(":")[1]), 0, tzinfo=time_zone))
             event.add('dtend', datetime(2025, month['month'], day['day'], int(value.split(
-                ":")[0]), int(value.split(":")[1]), 0, tzinfo=pytz.utc) + timedelta(minutes=5))
+                ":")[0]), int(value.split(":")[1]), 0, tzinfo=time_zone) + timedelta(minutes=5))
             cal.add_component(event)
 
 with open('../public/prayer_times.ics', 'wb') as f:
