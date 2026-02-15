@@ -17,3 +17,9 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Data
+
+Prayer times are stored in [`assets/times.json`](assets/times.json) and as per-month CSV files in [`assets/times/`](assets/times/). The original reference PDF is in [`assets/`](assets/Groningen%20Prayer%20Times.pdf).
+
+![Preview](assets/preview.png)
