@@ -1,5 +1,8 @@
 # Groningen Prayer Time
 
+> [!WARNING]
+> This project is archived and no longer supported. The prayer times are based on a [PDF booklet](/groningen-prayer-time/assets/Groningen Prayer Times.pdf) from the 1960s originally made for Den Haag, not Groningen, and are therefore inaccurate. The brothers have been informed, but the masjid continues to use these timetables. This project was made for the sake of Allah, but is kept public archive only as a reference.
+
 Monthly prayer timetable for Groningen, Netherlands.
 
 ## Description
